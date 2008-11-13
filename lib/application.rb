@@ -12,18 +12,19 @@ class Application
     
     application :name => "Sweet-beats" do |app|
       app.delegate = self
-      window :frame => [100, 100, 800, 100], :title => "Sweet-beats" do |win|
-        win << label(:text => "Hello from HotCocoa", :layout => {:start => false})
+      window :size => [800, 200], :title => "Sweet-beats", :view => :nolayout do |win|
+        # win << label(:text => "Hello from HotCocoa", :layout => {:start => false})
 
-        win.view = layout_view :mode => :horizontal do |layout|
-          layout.spacing = 0
-          buttons = []
-          16.times do |i|
-            b = button :title => "#{i}", :type => :push_on_push_off, :bezel => :textured_rounded
-            b.on_action { self.measure[i] = b.on?; puts self.measure }
-            buttons << b
-            layout << b
-          end
+        16.times do |i|
+          # x pos, y pos, width, height
+          b = button :title => "#{i}", :type => :push_on_push_off, :bezel => :textured_rounded, :frame => [10 + (30 * i), 10, 30, 30]
+          b.on_action { self.measure[i] = b.on?; puts self.measure }
+          win << b
+        end
+
+        16.times do |i|
+          i = image_view :frame => [0, 0, 50, 50], :file => "/Users/luke/Desktop/haven_logo.png", :frame => [10 + (30 * i), 40, 30, 10]
+          win << i
         end
         
         win.will_close { exit }
