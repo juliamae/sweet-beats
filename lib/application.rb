@@ -1,5 +1,6 @@
 #!/usr/local/bin/macruby
 require 'hotcocoa'
+require 'lib/midi'
 
 class Application
 
@@ -37,6 +38,11 @@ class Application
   end
 
   def play_song
+    bpm = 120
+    midi = LiveMIDI.new(bpm)
+    song = self.measure.map{|x| x ? "0" : "-"}.join("")
+    player = SongPlayer.new(midi, bpm, song)
+    player.play
   end
   
   # file/open
