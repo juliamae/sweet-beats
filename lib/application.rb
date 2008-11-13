@@ -15,6 +15,10 @@ class Application
       window :size => [800, 200], :title => "Sweet-beats", :view => :nolayout do |win|
         # win << label(:text => "Hello from HotCocoa", :layout => {:start => false})
 
+        b = button(:title => "Play", :bezel => :textured_rounded, :frame => [10, 80, 50, 50])
+        b.on_action { play_song }
+        win << b
+
         16.times do |i|
           # x pos, y pos, width, height
           b = button :title => "#{i}", :type => :push_on_push_off, :bezel => :textured_rounded, :frame => [10 + (30 * i), 10, 30, 30]
@@ -32,6 +36,9 @@ class Application
     end
   end
 
+  def play_song
+  end
+  
   # file/open
   def on_open(menu)
   end
