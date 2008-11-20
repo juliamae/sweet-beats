@@ -1,15 +1,22 @@
 #!/usr/local/bin/macruby
 require 'hotcocoa'
-require 'lib/midi'
+require 'bpm_timer'
+# require 'midi'
 
 class Application
 
   include HotCocoa
   
-  attr_accessor :measure
+  attr_accessor :measure, :timer, :index
   
   def start
     self.measure = [false] * 16
+    self.index = 0
+    self.timer = BpmTimer.new(180) do
+      puts self.index
+      self.index += 1
+      self.index %= measure.length
+    end
     
     application :name => "Sweet-beats" do |app|
       app.delegate = self
@@ -17,13 +24,13 @@ class Application
         # win << label(:text => "Hello from HotCocoa", :layout => {:start => false})
 
         b = button(:title => "Play", :bezel => :textured_rounded, :frame => [10, 80, 50, 50])
-        b.on_action { play_song }
+        b.on_action { self.timer.toggle }
         win << b
 
         16.times do |i|
           # x pos, y pos, width, height
           b = button :title => "#{i}", :type => :push_on_push_off, :bezel => :textured_rounded, :frame => [10 + (30 * i), 10, 30, 30]
-          b.on_action { self.measure[i] = b.on?; puts self.measure }
+          b.on_action { |b| self.measure[i] = b.on? }
           win << b
         end
 
@@ -38,11 +45,12 @@ class Application
   end
 
   def play_song
-    bpm = 120
-    midi = LiveMIDI.new(bpm)
-    song = self.measure.map{|x| x ? "0" : "-"}.join("")
-    player = SongPlayer.new(midi, bpm, song)
-    player.play
+    puts self.measure
+    # bpm = 120
+    # midi = LiveMIDI.new(bpm)
+    # song = self.measure.map{|x| x ? "0" : "-"}.join("")
+    # player = SongPlayer.new(midi, bpm, song)
+    # player.play
   end
   
   # file/open

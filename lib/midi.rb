@@ -225,3 +225,8 @@ class Tapper
     end
   end
 end
+
+bpm = 120
+midi = LiveMIDI.new(bpm)
+SongPlayer.new(midi, bpm, "0909090909090909")
+sleep(10)
